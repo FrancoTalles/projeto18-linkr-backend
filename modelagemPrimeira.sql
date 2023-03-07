@@ -1,9 +1,10 @@
 CREATE DATABASE "linkr";
 CREATE TABLE "users" (
 	"id" SERIAL PRIMARY KEY NOT NULL,
-	"email" serial NOT NULL,
-	"password" serial NOT NULL,
-	"username" serial NOT NULL
+	"email" TEXT NOT NULL,
+	"password" TEXT NOT NULL,
+	"username" TEXT NOT NULL,
+	"pictureURL" TEXT NOT NULL
 );
 
 CREATE TABLE "posts" (
@@ -22,7 +23,8 @@ CREATE TABLE "likes" (
 CREATE TABLE "hashtag" (
 	"id" SERIAL PRIMARY KEY NOT NULL,
 	"userID" int NOT NULL REFERENCES "users"("id"),
-	"postId" int NOT NULL REFERENCES "posts"("id")
+	"postId" int NOT NULL REFERENCES "posts"("id"), 
+	"hashtag" TEXT NOT NULL
 );
 
 CREATE TABLE "session" (
