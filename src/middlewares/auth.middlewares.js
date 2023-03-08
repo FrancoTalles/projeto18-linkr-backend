@@ -26,6 +26,7 @@ export async function checkSignUp(req, res, next) {
 export async function checkSignIn(req, res, next) {
     const user = req.body;
     const { email, password } = req.body;
+    
     try {
         const { error } = existingUserSchema.validate(user, { abortEarly: false });
         if (error) {

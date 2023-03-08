@@ -24,7 +24,7 @@ export async function signin(req, res) {
         session("userId", token) 
         VALUES ($1, $2)`,
             [id, token]);
-        return res.status(200).send(token);
+        return res.status(200).send({token, pictureURL, username});
     } catch (err) {
         return res.status(500).send(err.message);
     };
