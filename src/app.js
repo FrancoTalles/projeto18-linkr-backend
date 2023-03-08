@@ -11,7 +11,7 @@ dotenv.config();
 const app = express();
 app.use(cors());
 app.use(express.json());
-app.use([authRouter, postRouter,hashtagRouter]);
+app.use([authRouter, postRouter, hashtagRouter]);
 
 const port = process.env.PORT;
 
