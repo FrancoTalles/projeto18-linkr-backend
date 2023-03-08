@@ -1,7 +1,6 @@
 import db from "../config/database.connection.js";
 
-export async function createNewPost(data) {
-  const { userId, link, description } = data;
+export async function createNewPost(userId, link, description) {
 
   const result = await db.query(
     `INSERT INTO posts ("userId", "link", "description") VALUES ($1, $2, $3)`,
@@ -11,8 +10,7 @@ export async function createNewPost(data) {
   return result;
 }
 
-export async function getAllPosts(data) {
-  const { userIdValue } = data;
+export async function getAllPosts(id) {
 
   const result = await db.query(
     `
@@ -38,7 +36,7 @@ export async function getAllPosts(data) {
         ) AS whoLiked,
         EXISTS(
           SELECT 
-            $1 
+            1 
           FROM 
             "likes" l3
           WHERE 
@@ -51,19 +49,18 @@ export async function getAllPosts(data) {
     GROUP BY 
       p."id",
       u."username",
-      u."photoUrl"
+      u."pictureURL"
     ORDER BY 
       p."id" DESC
     LIMIT 20
   `,
-    [userIdValue]
+    [id]
   );
 
-  return result;
+  return result; 
 }
 
-export async function updatePostDesc(data) {
-  const { userIdValue, postId, description } = data;
+export async function updatePostDesc(userIdValue, postId, description) {
 
   const result = await db.query(
     `
@@ -77,8 +74,7 @@ export async function updatePostDesc(data) {
   return result;
 }
 
-export async function deleteUserPost(data) {
-  const { userIdValue, postId } = data;
+export async function deleteUserPost(userIdValue, postId) {
 
   const result = await db.query(
     `
