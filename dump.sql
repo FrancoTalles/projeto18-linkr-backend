@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 12.13 (Ubuntu 12.13-0ubuntu0.20.04.1)
--- Dumped by pg_dump version 12.13 (Ubuntu 12.13-0ubuntu0.20.04.1)
+-- Dumped from database version 14.7 (Ubuntu 14.7-0ubuntu0.22.04.1)
+-- Dumped by pg_dump version 14.7 (Ubuntu 14.7-0ubuntu0.22.04.1)
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -91,7 +91,8 @@ ALTER SEQUENCE public.likes_id_seq OWNED BY public.likes.id;
 CREATE TABLE public.posts (
     id integer NOT NULL,
     "userId" integer NOT NULL,
-    content text NOT NULL
+    description text NOT NULL,
+    link text NOT NULL
 );
 
 
@@ -230,19 +231,25 @@ ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_
 -- Data for Name: posts; Type: TABLE DATA; Schema: public; Owner: -
 --
 
+INSERT INTO public.posts VALUES (3, 1, 'post legal', 'https://css-tricks.com/books/greatest-css-tricks/scroll-animation/');
+INSERT INTO public.posts VALUES (4, 1, 'post legal', 'https://css-tricks.com/books/greatest-css-tricks/scroll-animation/');
+INSERT INTO public.posts VALUES (5, 1, 'post legal', 'https://css-tricks.com/books/greatest-css-tricks/scroll-animation/');
+INSERT INTO public.posts VALUES (6, 1, 'post legal', 'https://css-tricks.com/books/greatest-css-tricks/scroll-animation/');
+INSERT INTO public.posts VALUES (1, 1, 'post legal atualizado', 'https://css-tricks.com/books/greatest-css-tricks/scroll-animation/');
 
 
 --
 -- Data for Name: session; Type: TABLE DATA; Schema: public; Owner: -
 --
 
+INSERT INTO public.session VALUES (1, 1, 'a9cb3502-2a6a-4894-ab54-11e5905cb4eb');
 
 
 --
 -- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-INSERT INTO public.users VALUES (1, 'anap@gmail.com', '$2b$10$yeiGUHf5sRBh30stVg36Je1.UbvEQ9EVozmCyn9oPmSDxuslfGhE6', 'anateste', 'https://testeimage.com');
+INSERT INTO public.users VALUES (1, 'test@email.com', '$2b$10$MdRg0CCxFAj7vHCNfx2G1eaLWbGKNohen1kZkF8/rNPcJ/g5MCao2', 'test', 'http://t3.gstatic.com/licensed-image?q=tbn:ANd9GcRv0vZ3TceUwsZ5WDkysr4Y_2soBmWkOB7z04KLCXrEc4jzdqaQFi99PGK8AtI8JDrUSkxNDPHs6CLGjrA');
 
 
 --
@@ -263,14 +270,14 @@ SELECT pg_catalog.setval('public.likes_id_seq', 1, false);
 -- Name: posts_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.posts_id_seq', 1, false);
+SELECT pg_catalog.setval('public.posts_id_seq', 6, true);
 
 
 --
 -- Name: session_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.session_id_seq', 1, false);
+SELECT pg_catalog.setval('public.session_id_seq', 1, true);
 
 
 --
