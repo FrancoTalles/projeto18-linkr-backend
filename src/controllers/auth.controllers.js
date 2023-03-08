@@ -17,7 +17,7 @@ export async function signup(req, res) {
 };
 
 export async function signin(req, res) {
-    const { id } = res.locals.user;
+    const { id, pictureURL, username } = res.locals.user;
     const token = v4uuid();
     try {
         await db.query(`INSERT INTO 
