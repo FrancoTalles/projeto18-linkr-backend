@@ -2,6 +2,7 @@ import {
   createNewPost,
   deleteUserPost,
   getAllPosts,
+  getPostsByUser,
   updatePostDesc,
 } from "../repositories/postsRepository.js";
 
@@ -57,5 +58,22 @@ export async function deletePost(req, res) {
   } catch (error) {
     console.error(error);
     res.sendStatus(500);
+  }
+}
+
+export async function getUserPosts(req, res) {
+  const { userIdValue } = res.locals;
+  const { id } = req.params;
+
+  try {
+
+    const data = await getPostsByUser(userIdValue, id);
+
+    res.status(200).send(data.rows);
+
+  } catch (error) {
+
+    res.status(500).send(error.message);
+
   }
 }

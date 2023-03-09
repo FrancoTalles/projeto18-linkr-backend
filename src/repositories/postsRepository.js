@@ -57,7 +57,7 @@ export async function getAllPosts(id) {
     [id]
   );
 
-  return result; 
+  return result;
 }
 
 export async function updatePostDesc(userIdValue, postId, description) {
@@ -82,6 +82,26 @@ export async function deleteUserPost(userIdValue, postId) {
     WHERE id = $1 AND "userId" = $2
   `,
     [postId, userIdValue]
+  );
+
+  return result;
+}
+
+export async function getPostsByUser(userIdValue, id) {
+
+  const result = await db.query(
+    `
+    SELECT 
+      p."id" AS postId,
+        u."username" AS postAuthor,
+      u."pictureURL" AS authorPhoto,
+      p."description" AS postDescription,
+      p."link" AS postLink
+    FROM posts p 
+    JOIN users u ON p."userId" = u.id 
+    WHERE "userId" = $1
+  `,
+    [id]
   );
 
   return result;
