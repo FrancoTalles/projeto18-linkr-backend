@@ -26,7 +26,7 @@ export async function getPosts(_, res) {
   try {
     const data = await getAllPosts(userIdValue);
 
-    res.status(200).send(data.rows);
+    res.status(200).send(data);
   } catch (error) {
     console.error(error);
     res.sendStatus(500);
