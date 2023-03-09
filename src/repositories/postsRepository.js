@@ -86,6 +86,36 @@ export async function deleteUserPost(userIdValue, postId) {
   return result;
 }
 
+export async function getPostsByUser(userIdValue, id) {
+
+  const { rows: user } = await db.query(`
+    SELECT 
+      u."username", 
+      u."pictureURL" 
+    FROM users u 
+    WHERE u."id" = $1;
+  `,
+    [id]
+  );
+
+  const [userResult] = user;
+
+  const { rows: posts } = await db.query(
+    `
+    SELECT 
+      p."id" AS postId,
+      p."description" AS postDescription,
+      p."link" AS postLink
+    FROM posts p 
+    JOIN users u ON p."userId" = u.id 
+    WHERE "userId" = $1
+  `,
+    [id]
+  );
+
+  return { userResult, posts };
+}
+
 async function createDataWithMetadata(data) {
   try {
     const result = await Promise.all(
@@ -104,3 +134,4 @@ async function createDataWithMetadata(data) {
     console.log(error);
   }
 };
+
