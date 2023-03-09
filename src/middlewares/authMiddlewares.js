@@ -1,5 +1,5 @@
-import db from "../config/database.connection.js";
-import { newUserSchema, existingUserSchema } from "../schemas/auth.schemas.js";
+import db from "../config/databaseConnection.js";
+import { newUserSchema, existingUserSchema } from "../schemas/authSchemas.js";
 import bcrypt from "bcrypt";
 
 export async function checkSignUp(req, res, next) {

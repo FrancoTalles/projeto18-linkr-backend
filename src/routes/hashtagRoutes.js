@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { checkHashtag } from "../middlewares/hashtag.middleware.js";
+import { checkHashtag } from "../middlewares/hashtagMiddleware.js";
 
 const hashtagRouter = Router();
 

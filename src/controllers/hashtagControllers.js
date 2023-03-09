@@ -1,4 +1,4 @@
-import db from "../config/database.connection.js";
+import db from "../config/databaseConnection.js";
 
 export async function hashtagPosts(req, res) {
   const hashtag = res.locals.hashtag;

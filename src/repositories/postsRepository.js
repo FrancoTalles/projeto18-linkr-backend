@@ -1,4 +1,4 @@
-import db from "../config/database.connection.js";
+import db from "../config/databaseConnection.js";
 
 export async function createNewPost(userId, link, description) {
 
