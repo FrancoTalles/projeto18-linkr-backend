@@ -1,7 +1,7 @@
+import urlMetadata from "url-metadata";
 import db from "../config/databaseConnection.js";
 
 export async function createNewPost(userId, link, description) {
-
   const result = await db.query(
     `INSERT INTO posts ("userId", "link", "description") VALUES ($1, $2, $3)`,
     [userId, link, description]
@@ -11,7 +11,6 @@ export async function createNewPost(userId, link, description) {
 }
 
 export async function getAllPosts(id) {
-
   const result = await db.query(
     `
       SELECT 
@@ -57,11 +56,12 @@ export async function getAllPosts(id) {
     [id]
   );
 
-  return result; 
+  const data = createDataWithMetadata(result.rows);
+
+  return data;
 }
 
 export async function updatePostDesc(userIdValue, postId, description) {
-
   const result = await db.query(
     `
     UPDATE posts
@@ -75,7 +75,6 @@ export async function updatePostDesc(userIdValue, postId, description) {
 }
 
 export async function deleteUserPost(userIdValue, postId) {
-
   const result = await db.query(
     `
     DELETE FROM posts 
@@ -86,3 +85,22 @@ export async function deleteUserPost(userIdValue, postId) {
 
   return result;
 }
+
+async function createDataWithMetadata(data) {
+  try {
+    const result = await Promise.all(
+      data.map(async (user) => {
+        const metadata = await urlMetadata(user.postlink);
+        return {
+          ...user,
+          linkimage: metadata.image,
+          linktitle: metadata.title,          
+          linkdescription: metadata.description,
+        };
+      })
+    );
+    return result;
+  } catch (error) {
+    console.log(error);
+  }
+};
