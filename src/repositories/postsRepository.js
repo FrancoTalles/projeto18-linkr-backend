@@ -89,12 +89,22 @@ export async function deleteUserPost(userIdValue, postId) {
 
 export async function getPostsByUser(userIdValue, id) {
 
-  const result = await db.query(
+  const { rows: user } = await db.query(`
+    SELECT 
+      u."username", 
+      u."pictureURL" 
+    FROM users u 
+    WHERE u."id" = $1;
+  `,
+    [id]
+  );
+
+  const [userResult] = user;
+
+  const { rows: posts } = await db.query(
     `
     SELECT 
       p."id" AS postId,
-        u."username" AS postAuthor,
-      u."pictureURL" AS authorPhoto,
       p."description" AS postDescription,
       p."link" AS postLink
     FROM posts p 
@@ -104,5 +114,5 @@ export async function getPostsByUser(userIdValue, id) {
     [id]
   );
 
-  return result;
+  return { userResult, posts };
 }

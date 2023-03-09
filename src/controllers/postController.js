@@ -69,7 +69,13 @@ export async function getUserPosts(req, res) {
 
     const data = await getPostsByUser(userIdValue, id);
 
-    res.status(200).send(data.rows);
+    const object = {
+      postauthor: data.userResult.username,
+      authorphoto: data.userResult.pictureURL,
+      postsUser: data.posts
+    };
+
+    res.status(200).send(object);
 
   } catch (error) {
 
