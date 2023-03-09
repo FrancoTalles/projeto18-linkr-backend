@@ -50,7 +50,7 @@ export async function getAllPosts(id) {
       u."username",
       u."pictureURL"
     ORDER BY 
-      p."id" DESC
+      p."createdAt" DESC
     LIMIT 20
   `,
     [id]
