@@ -86,7 +86,6 @@ export async function deleteUserPost(userIdValue, postId) {
   return result;
 }
 
-
 export async function getPostsByUser(userIdValue, id) {
 
   const { rows: user } = await db.query(`
