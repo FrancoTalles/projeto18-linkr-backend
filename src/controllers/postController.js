@@ -49,10 +49,11 @@ export async function updatePost(_, res) {
 
 export async function deletePost(req, res) {
   const { userIdValue } = res.locals;
-  const { postId } = req.body;
+  const { id } = req.params;
+  console.log(`deleting post ${id}`);
 
   try {
-    await deleteUserPost(userIdValue, postId);
+    await deleteUserPost(userIdValue, id);
 
     res.sendStatus(204);
   } catch (error) {

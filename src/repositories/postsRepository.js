@@ -50,7 +50,7 @@ export async function getAllPosts(id) {
       u."username",
       u."pictureURL"
     ORDER BY 
-      p."id" DESC
+      p."createdAt" DESC
     LIMIT 20
   `,
     [id]
@@ -89,12 +89,12 @@ export async function deleteUserPost(userIdValue, postId) {
 export async function getPostsByUser(userIdValue, id) {
 
   const { rows: user } = await db.query(`
-  SELECT 
-    u."username", 
-    u."pictureURL" 
-  FROM users u 
-  WHERE u."id" = $1;
-`,
+    SELECT 
+      u."username", 
+      u."pictureURL" 
+    FROM users u 
+    WHERE u."id" = $1;
+  `,
     [id]
   );
 

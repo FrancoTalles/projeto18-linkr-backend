@@ -17,14 +17,21 @@ export async function signup(req, res) {
 };
 
 export async function signin(req, res) {
-    const { id } = res.locals.user;
+    const { id, pictureURL, username } = res.locals.user;
     const token = v4uuid();
+
     try {
         await db.query(`INSERT INTO 
         session("userId", token) 
         VALUES ($1, $2)`,
             [id, token]);
-        return res.status(200).send(token);
+
+        const data =  {
+            token,
+            pictureURL,
+            username
+        }
+        return res.status(200).send(data);
     } catch (err) {
         return res.status(500).send(err.message);
     };
