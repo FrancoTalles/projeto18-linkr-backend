@@ -3,7 +3,6 @@ import db from "../config/databaseConnection.js";
 export async function checkHashtag(req, res, next) {
   const userId = res.locals.userIdValue;
   const { hashtag } = req.params;
-  console.log(hashtag);
 
   try {
     const validate_hashtag = await db.query(

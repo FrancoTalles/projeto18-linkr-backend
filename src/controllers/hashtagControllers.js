@@ -3,7 +3,6 @@ import db from "../config/databaseConnection.js";
 export async function hashtagPosts(_, res) {
   const hashtag = res.locals.hashtag;
   const id = res.locals.userIdValue;
-  console.log("entrou aqui");
 
   try {
     const posts_para_procurar = await db.query(
@@ -54,6 +53,24 @@ export async function hashtagPosts(_, res) {
     const posts = posts_para_procurar.rows;
 
     res.status(200).send(posts);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+}
+
+export async function getHashtags(_, res) {
+  try {
+    const hashtags_pegas = await db.query(`
+    SELECT palavra, COUNT(*) AS numero_ocorrencias
+    FROM (
+    SELECT regexp_split_to_table(description, E'\\\\s+') AS palavra
+    FROM posts
+    ) palavras
+    WHERE palavra LIKE '#%'
+    GROUP BY palavra
+    ORDER BY numero_ocorrencias DESC;`);
+
+    res.status(200).send(hashtags_pegas.rows);
   } catch (error) {
     res.status(500).send(error.message);
   }
