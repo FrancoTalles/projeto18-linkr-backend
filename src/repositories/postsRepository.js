@@ -124,7 +124,7 @@ async function createDataWithMetadata(data) {
         return {
           ...user,
           linkimage: metadata.image,
-          linktitle: metadata.title,          
+          linktitle: metadata.title,
           linkdescription: metadata.description,
         };
       })
