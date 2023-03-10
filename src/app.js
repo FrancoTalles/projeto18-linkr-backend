@@ -6,12 +6,13 @@ import postRouter from "./routes/postsRoutes.js";
 
 import authRouter from "./routes/authRoutes.js";
 import hashtagRouter from "./routes/hashtagRoutes.js";
+import likesRouter from "./routes/likesRoutes.js";
 dotenv.config();
 
 const app = express();
 app.use(cors());
 app.use(express.json());
-app.use([authRouter, postRouter, hashtagRouter]);
+app.use([authRouter, postRouter, hashtagRouter,likesRouter]);
 
 const port = process.env.PORT;
 
