@@ -1,5 +1,6 @@
 import urlMetadata from "url-metadata";
 import db from "../config/databaseConnection.js";
+import { createRePostsData } from "./rePostRepository.js";
 
 export async function createNewPost(userId, link, description) {
   const result = await db.query(
@@ -20,7 +21,9 @@ export async function getAllPosts(id) {
         u."pictureURL" AS authorPhoto,
         p."description" AS postDescription,
         p."link" AS postLink,
+        p."createdAt" AS createdAt,
         COUNT(l."id") AS likesCount,
+        COUNT(r."id") AS resharesCount,
         (
           SELECT 
             json_agg(
@@ -46,6 +49,7 @@ export async function getAllPosts(id) {
       "posts" p
       INNER JOIN "users" u ON p."userId" = u."id"
       LEFT JOIN "likes" l ON p."id" = l."postId" AND l."liked" = true
+      LEFT JOIN "reshare" r ON p."id" = r."postId"
     GROUP BY 
       p."id",
       u."username",
@@ -55,11 +59,17 @@ export async function getAllPosts(id) {
     LIMIT 20
   `,
     [id]
-  );
+  ); 
 
-  const data = createDataWithMetadata(result.rows);
+  const resharedData = await createRePostsData(id);
 
-  return data;
+  const mixedData = [...result.rows, ...resharedData.rows];
+
+  const orderedData = sortByCreatedAt(mixedData)
+
+  const finalData = createDataWithMetadata(orderedData);
+
+  return finalData;
 }
 
 export async function updatePostDesc(userIdValue, postId, description) {
@@ -172,4 +182,17 @@ async function createDataWithMetadata(data) {
     console.log(error);
   }
 };
+
+function sortByCreatedAt(posts) {
+  posts.sort((a, b) => {
+    if (a.createdat < b.createdat) {
+      return 1;
+    } else if (a.createdat > b.createdat) {
+      return -1;
+    } else {
+      return 0;
+    }
+  });
+  return posts;
+}
 
