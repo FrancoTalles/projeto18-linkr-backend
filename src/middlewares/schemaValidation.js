@@ -3,7 +3,7 @@ export default function schemaValidation(schema) {
         try {
             const value = await schema
                 .validateAsync(req.body, { abortEarly: false });
-
+                            
             res.locals.value = value;
 
             next();
