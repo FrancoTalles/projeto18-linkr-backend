@@ -1,4 +1,5 @@
 import db from "../config/databaseConnection.js";
+import urlMetadata from "url-metadata";
 
 export async function hashtagPosts(_, res) {
   const hashtag = res.locals.hashtag;
@@ -8,6 +9,7 @@ export async function hashtagPosts(_, res) {
     const posts_para_procurar = await db.query(
       `SELECT 
       p."id" AS postId,
+      p."userId" AS userId,
       u."username" AS postAuthor,
       u."pictureURL" AS authorPhoto,
       p."description" AS postDescription,
@@ -50,7 +52,8 @@ export async function hashtagPosts(_, res) {
       [id, `%#${hashtag}%`]
     );
 
-    const posts = posts_para_procurar.rows;
+    const posts = await createDataWithMetadata(posts_para_procurar.rows);
+    console.log(posts) 
 
     res.status(200).send(posts);
   } catch (error) {
@@ -75,3 +78,22 @@ export async function getHashtags(_, res) {
     res.status(500).send(error.message);
   }
 }
+
+async function createDataWithMetadata(data) {
+  try {
+    const result = await Promise.all(
+      data.map(async (user) => {
+        const metadata = await urlMetadata(user.postlink);
+        return {
+          ...user,
+          linkimage: metadata.image,
+          linktitle: metadata.title,
+          linkdescription: metadata.description,
+        };
+      })
+    );
+    return result;
+  } catch (error) {
+    console.log(error);
+  }
+};
