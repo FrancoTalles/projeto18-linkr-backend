@@ -13,12 +13,14 @@ import likesRouter from "./routes/likesRoutes.js";
 import usersRouter from "./routes/usersRoutes.js";
 
 import rePostRouter from "./routes/rePostRoutes.js";
+
+import followRouter from "./routes/followRoutes.js";
 dotenv.config();
 
 const app = express();
 app.use(cors());
 app.use(express.json());
-app.use([authRouter, postRouter, hashtagRouter, likesRouter, usersRouter, rePostRouter]);
+app.use([authRouter, postRouter, hashtagRouter, likesRouter, usersRouter, rePostRouter, followRouter]);
 
 const port = process.env.PORT;
 

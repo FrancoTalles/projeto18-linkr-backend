@@ -53,7 +53,6 @@ export async function hashtagPosts(_, res) {
     );
 
     const posts = await createDataWithMetadata(posts_para_procurar.rows);
-    console.log(posts) 
 
     res.status(200).send(posts);
   } catch (error) {
@@ -94,6 +93,6 @@ async function createDataWithMetadata(data) {
     );
     return result;
   } catch (error) {
-    console.log(error);
+    res.status(500).send(error);
   }
-};
+}
