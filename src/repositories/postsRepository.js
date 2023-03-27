@@ -60,19 +60,19 @@ export async function getAllPosts(id) {
     LIMIT 20
   `,
     [id]
-  ); 
+  );
 
   const resharedData = await createRePostsData(id);
 
   let mixedData = [];
 
-  if(resharedData.rows !== undefined) {
+  if (resharedData.rows !== undefined) {
     mixedData = [...result.rows, ...resharedData.rows];
   } else {
     mixedData = [...result.rows];
-  }  
+  }
 
-  const orderedData = sortByCreatedAt(mixedData)
+  const orderedData = sortByCreatedAt(mixedData);
 
   const finalData = createDataWithMetadata(orderedData);
 
