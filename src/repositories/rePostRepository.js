@@ -55,7 +55,7 @@ export async function createRePostsData(userId) {
         INNER JOIN "users" u2 ON p."userId" = u2."id"
         LEFT JOIN "likes" l ON p."id" = l."postId" AND l."liked" = true
       WHERE
-        p."userId" IN (
+        r."userId" IN (
             SELECT
                 "followedUser" 
             FROM
@@ -77,7 +77,7 @@ export async function createRePostsData(userId) {
       [userId]
     );
 
-    return result; 
+    return result;
   } catch (error) {
     console.log(error);
   }
