@@ -13,8 +13,6 @@ export async function checkHashtag(req, res, next) {
       [`%#${hashtag}%`]
     );
 
-    console.log(validate_hashtag.rows);
-
     if (validate_hashtag.rowCount === 0) {
       return res.status(404).send("Não existe essa hashtag");
     }
