@@ -93,6 +93,6 @@ async function createDataWithMetadata(data) {
     );
     return result;
   } catch (error) {
-    res.status(500).send(error);
+    console.log(error.message);
   }
 }

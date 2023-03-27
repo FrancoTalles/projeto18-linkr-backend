@@ -22,7 +22,7 @@ export async function getAllPosts(id) {
     p."description" AS postDescription,
     p."link" AS postLink,
     p."createdAt" AS createdAt,
-    COUNT(DISTINCT l."id") AS likesCount,
+    COUNT(l."id") AS likesCount,
     COUNT(r."id") AS resharesCount,
     (
       SELECT 
@@ -48,9 +48,11 @@ export async function getAllPosts(id) {
     FROM 
       "posts" p
       INNER JOIN "users" u ON p."userId" = u."id"
-      INNER JOIN "followers" f ON f."followedUser" = p."userId" AND f."userId" = $1
+      LEFT JOIN "followers" f ON f."followedUser" = p."userId"
       LEFT JOIN "likes" l ON p."id" = l."postId" AND l."liked" = true
       LEFT JOIN "reshare" r ON p."id" = r."postId"
+    WHERE 
+      (p."userId" = $1 OR (f."userId" = $1 AND f."followedUser" = p."userId"))
     GROUP BY 
       p."id",
       u."username",
@@ -58,7 +60,6 @@ export async function getAllPosts(id) {
     ORDER BY 
       p."createdAt" DESC
     LIMIT 20
-
   `,
     [id]
   );
