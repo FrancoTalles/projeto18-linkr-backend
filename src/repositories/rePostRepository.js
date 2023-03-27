@@ -48,13 +48,21 @@ export async function createRePostsData(userId) {
             WHERE
                 l3."userId" = $1 AND l3."postId" = p."id" AND l3."liked" = true
         ) AS liked
-      FROM
+      FROM 
         "reshare" r
         INNER JOIN "users" u ON r."userId" = u."id"
         INNER JOIN "posts" p ON r."postId" = p."id"
         INNER JOIN "users" u2 ON p."userId" = u2."id"
         LEFT JOIN "likes" l ON p."id" = l."postId" AND l."liked" = true
-        
+      WHERE
+        p."userId" IN (
+            SELECT
+                "followedUser" 
+            FROM
+                "followers"
+            WHERE
+                "userId" = $1
+      )
       GROUP BY
         r."id",
         u."username",

@@ -48,6 +48,7 @@ export async function getAllPosts(id) {
     FROM 
       "posts" p
       INNER JOIN "users" u ON p."userId" = u."id"
+      INNER JOIN "followers" f ON f."followedUser" = p."userId" AND f."userId" = $1
       LEFT JOIN "likes" l ON p."id" = l."postId" AND l."liked" = true
       LEFT JOIN "reshare" r ON p."id" = r."postId"
     GROUP BY 
@@ -63,7 +64,13 @@ export async function getAllPosts(id) {
 
   const resharedData = await createRePostsData(id);
 
-  const mixedData = [...result.rows, ...resharedData.rows];
+  let mixedData = [];
+
+  if(resharedData.rows !== undefined) {
+    mixedData = [...result.rows, ...resharedData.rows];
+  } else {
+    mixedData = [...result.rows];
+  }  
 
   const orderedData = sortByCreatedAt(mixedData)
 
